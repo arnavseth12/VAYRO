@@ -1,13 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="styles.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>VAYRO | Your Academic Space</title>
+
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <nav>
+
+    <div class="dashboard-layout">
+
+      <aside class="sidebar">
+
+
+        <div class="brand">
+          <a href="index.html" class="brand-name">VAYRO</a>
+          <p class="brand-tagline">Your Academic Space</p>
+        </div>
+
+        <!-- Sidebar content  -->
+    <nav aria-label ="Main navigation">
     <ul>
       <li><a href="index.html">Home</a></li>
       <li><a href="#assignments">Assignments</a></li>
@@ -15,9 +29,13 @@
       <li><a href="#calendar">Calendar</a></li>
       <li><a href="#study-planner">Study Planner</a></li>
       <li><a href="#analytics">Analytics</a></li>
-      <li><a href="#profile">Profile</a></li>
+      <li><a href="#settings">Settings</a></li>
     </ul>
   </nav>
+
+      </aside>
+
+      <div class="dashboard-content">
 <!-- Header section -->
   <header>
     <p> Today is: <span id="date-display"></span></p>
@@ -25,23 +43,32 @@
   </header>
 
   <main>
+
+    <!-- Dashboard widgets -->
     <section id="agenda">
       <h2>Agenda</h2>
       <p>Here you can view your upcoming tasks and events.</p>
     </section>
+
     <section id="assignments">
       <h2>Assignments</h2>
       <p>Here you can view your assignments and their deadlines.</p>
     </section>
+
     <section id="focus">
       <h2>Focus</h2>
       <p>Here you can set your focus for the day and track your progress.</p>
     </section>
 
-
   </main>
+
+          </div>
+
+    </div> 
 
 
   <script src="myscripts.js"></script>
+
+
 </body>
 </html>
