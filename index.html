@@ -3,118 +3,249 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta name="theme-color" content="#10130f">
+  <meta name="description" content="VAYRO — a calm, organized workspace for school, study, and progress.">
   <title>VAYRO | Your Academic Space</title>
-
   <link rel="stylesheet" href="styles.css">
+  <script src="myscripts.js" defer></script>
 </head>
 <body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="VAYRO navigation">
+      <a class="brand" href="#home" data-view="home" aria-label="VAYRO home">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span class="brand-copy"><strong>VAYRO</strong><small>YOUR ACADEMIC SPACE</small></span>
+      </a>
 
-    <div class="dashboard-layout">
+      <div class="sidebar-label">WORKSPACE</div>
+      <nav class="side-nav" aria-label="Main navigation">
+        <a class="nav-link is-active" href="#home" data-view="home" aria-current="page"><span class="nav-icon">⌂</span> Overview</a>
+        <a class="nav-link" href="#assignments" data-view="assignments"><span class="nav-icon">▤</span> Assignments <span class="nav-count" id="nav-assignment-count">0</span></a>
+        <a class="nav-link" href="#calendar" data-view="calendar"><span class="nav-icon">▦</span> Calendar</a>
+        <a class="nav-link" href="#planner" data-view="planner"><span class="nav-icon">☷</span> Study planner</a>
+        <a class="nav-link" href="#grades" data-view="grades"><span class="nav-icon">⌁</span> Grades</a>
+        <a class="nav-link" href="#materials" data-view="materials"><span class="nav-icon">▧</span> Study library</a>
+        <a class="nav-link" href="#analytics" data-view="analytics"><span class="nav-icon">▥</span> Analytics</a>
+      </nav>
 
-      <aside class="sidebar">
+      <div class="sidebar-label sidebar-label-spaced">PERSONAL</div>
+      <nav class="side-nav" aria-label="Personal navigation">
+        <a class="nav-link" href="#integrations" data-view="integrations"><span class="nav-icon">⌘</span> Integrations</a>
+        <a class="nav-link" href="#settings" data-view="settings"><span class="nav-icon">⚙</span> Settings</a>
+      </nav>
 
-
-        <div class="brand">
-          <a href="index.html" class="brand-name">VAYRO</a>
-          <p class="brand-tagline">Your Academic Space</p>
+      <div class="sidebar-bottom">
+        <div class="sidebar-note">
+          <span class="note-mark" aria-hidden="true">✳</span>
+          <p>Make room for<br><em>deep work.</em></p>
+          <small>ONE THING AT A TIME</small>
         </div>
-
-        <!-- Sidebar content  -->
-    <nav aria-label ="Main navigation">
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="#assignments">Assignments</a></li>
-      <li><a href="#grades">Grades</a></li>
-      <li><a href="#calendar">Calendar</a></li>
-      <li><a href="#study-planner">Study Planner</a></li>
-      <li><a href="#analytics">Analytics</a></li>
-      <li><a href="#settings">Settings</a></li>
-    </ul>
-  </nav>
-
-      </aside>
-
-      <div class="dashboard-content">
-<!-- Header section -->
-  <header class="dashboard-header">
-
-    <div class="welcome-block">
-
-      <p class="current-date">
-        <span id="date-display"></span>
-      </p>
-
-      <h1>
-        Welcome back, <span class="user-name">Arnav</span>
-      </h1>
-
-      <p class="welcome-subtitle">
-        Ready to make today count?
-      </p>
-
-    </div>
-
-    <div class="header-tools"
-
-    <div class="clock-display"
-    <span id="clock-display">--:--</span>
-    </div>
-
-    <span class="profile-avatar" aria-hidden="true">A</span>
-    
-  
-  </div>
-
-</header>
-  <main>
-
-    <section class="stats-overview" aria-label="Acedemic overview">
-
-      <!-- Tasks completed-->
-       <div class="stat-card">
-        <p class="stat-value">12</p>
-        <p class="stat-label">Tasks Completed This Week</p>
+        <div class="sidebar-profile">
+          <span class="avatar avatar-small" id="sidebar-avatar">S</span>
+          <span class="sidebar-profile-copy"><strong id="sidebar-name">Student</strong><small>Personal workspace</small></span>
+        </div>
       </div>
+    </aside>
 
-      <!-- Acedemic Average -->
-       <div class="stat-card">
-        <p class="stat-value">87%</p>
-        <p class="stat-label">Current Average</p>
-      </div>
+    <main class="main-area">
+      <header class="topbar">
+        <div class="breadcrumb"><span>VAYRO</span><span class="breadcrumb-separator">/</span><span id="page-breadcrumb">Overview</span></div>
+        <div class="topbar-actions">
+          <span class="live-date" id="date-display">Today</span>
+          <time class="clock-display" id="clock-display" datetime="">--:--</time>
+          <button class="avatar avatar-button" id="profile-shortcut" type="button" aria-label="Open settings">S</button>
+        </div>
+      </header>
 
-      <!-- study break -->
-       <div class="stat-card">
-        <p class="stat-value">7 days</p>
-        <p class="stat-label">Study Break</p>
-      </div>
-    </section>
-
-    <!-- Dashboard widgets -->
-    <section id="agenda">
-      <h2>Agenda</h2>
-      <p>Here you can view your upcoming tasks and events.</p>
-    </section>
-
-    <section id="assignments">
-      <h2>Assignments</h2>
-      <p>Here you can view your assignments and their deadlines.</p>
-    </section>
-
-    <section id="focus">
-      <h2>Focus</h2>
-      <p>Here you can set your focus for the day and track your progress.</p>
-    </section>
-
-  </main>
-
+      <div class="content-wrap">
+        <section class="view-panel is-visible" id="view-home" data-view-panel="home">
+          <div class="page-heading page-heading-home">
+            <div>
+              <p class="eyebrow" id="home-greeting">YOUR DAY, IN FOCUS</p>
+              <h1>Welcome back, <span class="heading-accent" id="welcome-name">Student</span>.</h1>
+              <p class="page-subtitle">A little structure creates room for better work.</p>
+            </div>
+            <button class="button button-primary" type="button" data-open-dialog="assignment-dialog">＋ Add assignment</button>
           </div>
 
-    </div> 
+          <div class="stat-grid" aria-label="Your academic overview">
+            <article class="stat-card"><span class="stat-kicker">OPEN ASSIGNMENTS</span><strong class="stat-value" id="stat-open">0</strong><span class="stat-footnote">Still on your list</span></article>
+            <article class="stat-card"><span class="stat-kicker">RECORDED AVERAGE</span><strong class="stat-value" id="stat-average">—</strong><span class="stat-footnote">From grades you enter</span></article>
+            <article class="stat-card"><span class="stat-kicker">FOCUS THIS WEEK</span><strong class="stat-value" id="stat-focus">0 <small>min</small></strong><span class="stat-footnote">Completed focus sessions</span></article>
+            <article class="stat-card stat-card-highlight"><span class="stat-kicker">COMPLETED</span><strong class="stat-value" id="stat-completed">0</strong><span class="stat-footnote">Assignments finished</span></article>
+          </div>
 
+          <div class="home-grid">
+            <section class="panel agenda-panel" aria-labelledby="today-agenda-heading">
+              <div class="panel-heading">
+                <div><p class="eyebrow">YOUR SCHEDULE</p><h2 id="today-agenda-heading">Today's agenda</h2></div>
+                <button class="text-button" type="button" data-go-view="calendar">Open calendar ↗</button>
+              </div>
+              <div id="today-agenda" class="agenda-list"><div class="empty-state compact"><span>✳</span><p>Your day is open.</p><small>Add a calendar event to plan your day.</small></div></div>
+              <button class="inline-add" type="button" data-open-dialog="event-dialog">＋ Add an event</button>
+            </section>
 
-  <script src="myscripts.js"></script>
+            <section class="focus-panel" aria-labelledby="focus-heading">
+              <div class="focus-topline"><span class="focus-chip"><span class="status-dot"></span> FOCUS ROOM</span><span class="focus-leaf" aria-hidden="true">✳</span></div>
+              <p class="eyebrow focus-eyebrow">PROTECT YOUR ATTENTION</p>
+              <h2 id="focus-heading">Start a focus session.</h2>
+              <p class="focus-description">One task, one session, no need to rush.</p>
+              <div class="focus-clock-wrap"><div class="focus-clock-ring"><span id="timer-value" class="timer-value" role="timer" aria-live="off">25:00</span><small id="timer-caption">MINUTES OF FOCUS</small></div></div>
+              <div class="focus-presets" role="group" aria-label="Focus duration">
+                <button class="preset-button is-selected" type="button" data-minutes="25" aria-pressed="true">25 min</button>
+                <button class="preset-button" type="button" data-minutes="45" aria-pressed="false">45 min</button>
+                <button class="preset-button" type="button" data-minutes="60" aria-pressed="false">60 min</button>
+              </div>
+              <div class="focus-actions"><button class="button button-cream" id="focus-start-button" type="button">Start session</button><button class="button button-quiet" id="focus-reset-button" type="button">Reset</button></div>
+              <p class="focus-session-note" id="focus-session-note">Your next quiet stretch starts here.</p>
+            </section>
 
+            <section class="panel assignments-panel" aria-labelledby="home-assignments-heading">
+              <div class="panel-heading"><div><p class="eyebrow">KEEP MOVING</p><h2 id="home-assignments-heading">Upcoming assignments</h2></div><button class="text-button" type="button" data-go-view="assignments">View all ↗</button></div>
+              <div id="home-assignments-list" class="mini-list"><div class="empty-state compact"><span>✓</span><p>No assignments yet.</p><small>Add your first assignment to see it here.</small></div></div>
+            </section>
 
+            <section class="panel next-test-panel" aria-labelledby="next-test-heading">
+              <div class="panel-heading"><div><p class="eyebrow">LOOKING AHEAD</p><h2 id="next-test-heading">Next test</h2></div><span class="tiny-symbol" aria-hidden="true">↗</span></div>
+              <div id="next-test-content" class="next-test-content"><p class="muted-copy">Add a test event to your calendar and it will appear here.</p></div>
+              <button class="inline-add" type="button" data-open-dialog="event-dialog" data-event-type="Test">＋ Schedule a test</button>
+            </section>
+
+            <section class="panel materials-panel" aria-labelledby="home-materials-heading">
+              <div class="panel-heading"><div><p class="eyebrow">YOUR REFERENCE SHELF</p><h2 id="home-materials-heading">Study materials</h2></div><button class="text-button" type="button" data-go-view="materials">Open library ↗</button></div>
+              <div id="home-materials-list" class="material-preview"><div class="empty-state compact"><span>▤</span><p>Your library is waiting.</p><small>Save notes, links, and useful resources.</small></div></div>
+            </section>
+
+            <section class="panel progress-panel" aria-labelledby="home-progress-heading">
+              <div class="panel-heading"><div><p class="eyebrow">SMALL STEPS ADD UP</p><h2 id="home-progress-heading">Academic snapshot</h2></div><button class="text-button" type="button" data-go-view="grades">View grades ↗</button></div>
+              <div id="home-grade-summary" class="grade-summary"><span class="grade-empty">—</span><p class="muted-copy">Add a few grades to see your current average.</p></div>
+              <div class="progress-track"><span id="home-grade-bar" style="width:0%"></span></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view-panel" id="view-assignments" data-view-panel="assignments" hidden>
+          <div class="page-heading"><div><p class="eyebrow">STAY ON TOP OF THE DETAILS</p><h1>Assignments</h1><p class="page-subtitle">Capture the work, set a deadline, and keep moving.</p></div><button class="button button-primary" type="button" data-open-dialog="assignment-dialog">＋ New assignment</button></div>
+          <div class="toolbar panel-toolbar"><div class="filter-tabs" role="group" aria-label="Filter assignments"><button class="filter-tab is-active" data-assignment-filter="all" type="button" aria-pressed="true">All</button><button class="filter-tab" data-assignment-filter="open" type="button" aria-pressed="false">To do</button><button class="filter-tab" data-assignment-filter="completed" type="button" aria-pressed="false">Completed</button></div><label class="search-field"><span class="sr-only">Search assignments</span><input id="assignment-search" type="search" placeholder="Search assignments..."></label></div>
+          <div class="panel full-panel"><div class="list-heading"><span>ASSIGNMENT</span><span>SUBJECT</span><span>DUE DATE</span><span>STATUS</span><span>ACTIONS</span></div><div id="assignments-list" class="data-list"><div class="empty-state"><span>✳</span><h3>A clean slate.</h3><p>Add an assignment to start organizing your workload.</p></div></div></div>
+        </section>
+
+        <section class="view-panel" id="view-calendar" data-view-panel="calendar" hidden>
+          <div class="page-heading"><div><p class="eyebrow">SEE THE SHAPE OF YOUR WEEK</p><h1>Calendar</h1><p class="page-subtitle">Classes, deadlines, tests, and time you've set aside for yourself.</p></div><button class="button button-primary" type="button" data-open-dialog="event-dialog">＋ New event</button></div>
+          <div class="calendar-layout">
+            <section class="panel calendar-panel" aria-label="Monthly calendar">
+              <div class="calendar-toolbar"><button class="icon-button" id="calendar-prev" type="button" aria-label="Previous month">←</button><h2 id="calendar-month-label">Month Year</h2><button class="icon-button" id="calendar-next" type="button" aria-label="Next month">→</button><button class="text-button calendar-today" id="calendar-today" type="button">Today</button></div>
+              <div class="calendar-grid calendar-weekdays" aria-hidden="true"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+              <div class="calendar-grid" id="calendar-days" role="group" aria-label="Choose a date"></div>
+            </section>
+            <section class="panel selected-day-panel"><div class="panel-heading"><div><p class="eyebrow">YOUR PLAN</p><h2 id="selected-date-label">Selected day</h2></div><button class="text-button" type="button" data-open-dialog="event-dialog">＋ Add</button></div><div id="selected-day-events" class="day-event-list"><div class="empty-state compact"><span>☼</span><p>Nothing scheduled.</p><small>Choose a day or add an event.</small></div></div></section>
+          </div>
+          <div class="calendar-utilities panel"><div><p class="eyebrow">TAKE YOUR SCHEDULE WITH YOU</p><h2>Calendar file tools</h2><p class="muted-copy">Export your VAYRO events as an .ics file, or import an .ics calendar file. This is file-based transfer, not live calendar syncing.</p></div><div class="utility-actions"><button class="button button-secondary" type="button" data-export-ics>Export .ics</button><button class="button button-secondary" type="button" data-import-ics>Import .ics</button><input id="ics-file-input" type="file" accept=".ics,text/calendar" hidden></div></div>
+        </section>
+
+        <section class="view-panel" id="view-planner" data-view-panel="planner" hidden>
+          <div class="page-heading"><div><p class="eyebrow">TURN INTENTION INTO ACTION</p><h1>Study planner</h1><p class="page-subtitle">Break big goals into clear next steps.</p></div><button class="button button-primary" type="button" data-open-dialog="task-dialog">＋ Add study task</button></div>
+          <div class="planner-layout"><section class="panel"><div class="panel-heading"><div><p class="eyebrow">YOUR ACTION LIST</p><h2>Study tasks</h2></div><span class="subtle-count" id="planner-count">0 tasks</span></div><div id="planner-list" class="task-list"><div class="empty-state"><span>☷</span><h3>Make a plan that feels doable.</h3><p>Add a task to turn your study intentions into a next step.</p></div></div></section><aside class="panel planner-tip"><span class="tip-mark">✳</span><p class="eyebrow">A GENTLE REMINDER</p><h2>Start smaller than you think.</h2><p class="muted-copy">A clear 20-minute task is easier to begin than a vague goal to “study everything.”</p><button class="text-button" type="button" data-go-view="home">Start a focus session ↗</button></aside></div>
+        </section>
+
+        <section class="view-panel" id="view-grades" data-view-panel="grades" hidden>
+          <div class="page-heading"><div><p class="eyebrow">UNDERSTAND YOUR PROGRESS</p><h1>Grades</h1><p class="page-subtitle">Record results and see the average of the grades you enter.</p></div><button class="button button-primary" type="button" data-open-dialog="grade-dialog">＋ Add grade</button></div>
+          <div class="grade-overview-grid"><article class="panel grade-overview-card"><span class="eyebrow">RECORDED AVERAGE</span><strong id="grades-average">—</strong><p class="muted-copy">Simple average of entered percentages.</p></article><article class="panel grade-overview-card"><span class="eyebrow">ASSESSMENTS</span><strong id="grades-count">0</strong><p class="muted-copy">Results currently recorded.</p></article><article class="panel grade-overview-card"><span class="eyebrow">SUBJECTS</span><strong id="grades-subject-count">0</strong><p class="muted-copy">Subjects represented in your gradebook.</p></article></div>
+          <section class="panel full-panel"><div class="panel-heading"><div><p class="eyebrow">GRADEBOOK</p><h2>Recorded results</h2></div></div><div id="grades-list" class="grade-list"><div class="empty-state"><span>⌁</span><h3>Your gradebook starts here.</h3><p>Add an assessment and its score to calculate your recorded average.</p></div></div></section>
+          <p class="disclaimer-line">VAYRO calculates a simple average from the scores you enter. It does not automatically reproduce your school's weighted grading policy.</p>
+        </section>
+
+        <section class="view-panel" id="view-materials" data-view-panel="materials" hidden>
+          <div class="page-heading"><div><p class="eyebrow">KEEP USEFUL THINGS CLOSE</p><h1>Study library</h1><p class="page-subtitle">A home for reference links, notes, and study resources.</p></div><button class="button button-primary" type="button" data-open-dialog="material-dialog">＋ Save resource</button></div>
+          <div class="library-toolbar panel"><label class="search-field library-search"><span class="sr-only">Search your library</span><input id="materials-search" type="search" placeholder="Search titles, subjects, notes..."></label><span class="subtle-count" id="materials-count">0 resources</span></div>
+          <div id="materials-list" class="resource-grid"><div class="empty-state"><span>▧</span><h3>Your reference shelf is empty.</h3><p>Save a link to a useful explanation, a document, or a set of notes.</p></div></div>
+        </section>
+
+        <section class="view-panel" id="view-analytics" data-view-panel="analytics" hidden>
+          <div class="page-heading"><div><p class="eyebrow">NOTICE YOUR MOMENTUM</p><h1>Analytics</h1><p class="page-subtitle">A simple picture of the work you've recorded in VAYRO.</p></div></div>
+          <div class="analytics-grid"><article class="panel analytics-card"><span class="eyebrow">ASSIGNMENTS COMPLETED</span><strong id="analytics-completion">0%</strong><div class="progress-track"><span id="analytics-completion-bar" style="width:0%"></span></div><small id="analytics-assignment-detail">0 of 0 assignments</small></article><article class="panel analytics-card"><span class="eyebrow">FOCUS TIME</span><strong id="analytics-focus">0 min</strong><small>Completed sessions</small></article><article class="panel analytics-card"><span class="eyebrow">RECORDED AVERAGE</span><strong id="analytics-average">—</strong><small>Based on entered grades</small></article></div>
+          <section class="panel subject-analytics"><div class="panel-heading"><div><p class="eyebrow">BY SUBJECT</p><h2>Grade overview</h2></div></div><div id="subject-bars" class="subject-bars"><p class="muted-copy">Add grades to see a subject breakdown.</p></div></section>
+        </section>
+
+        <section class="view-panel" id="view-integrations" data-view-panel="integrations" hidden>
+          <div class="page-heading"><div><p class="eyebrow">YOUR TOOLS, YOUR CHOICE</p><h1>Integrations</h1><p class="page-subtitle">Use familiar services alongside your VAYRO workspace.</p></div></div>
+          <div class="integration-grid">
+            <article class="panel integration-card"><div class="integration-icon gmail-icon">M</div><div class="integration-copy"><span class="integration-status status-available">AVAILABLE AS A SHORTCUT</span><h2>Gmail</h2><p>Open your Gmail inbox in a new tab. VAYRO does not read, store, or send email in this local version.</p><a class="button button-secondary" href="https://mail.google.com/" target="_blank" rel="noopener noreferrer">Open Gmail ↗</a></div></article>
+            <article class="panel integration-card"><div class="integration-icon calendar-icon">▦</div><div class="integration-copy"><span class="integration-status status-file">CALENDAR FILE TRANSFER</span><h2>Google Calendar</h2><p>Export VAYRO events as an .ics file and import it into Google Calendar. Live two-way sync needs Google OAuth and a secure backend.</p><button class="button button-secondary" type="button" data-export-ics>Export events</button></div></article>
+            <article class="panel integration-card"><div class="integration-icon apple-icon">◷</div><div class="integration-copy"><span class="integration-status status-file">CALENDAR FILE TRANSFER</span><h2>Apple Calendar</h2><p>Move your schedule using a standard .ics file. This version does not connect directly to your Apple account.</p><button class="button button-secondary" type="button" data-export-ics>Export events</button></div></article>
+          </div>
+          <div class="integration-note panel"><span class="tip-mark">i</span><div><h2>Why aren't these full connections yet?</h2><p class="muted-copy">A ChatGPT-connected Gmail or calendar app cannot automatically be used as an integration inside a separate website. A real connection requires VAYRO's own authorization flow, provider credentials, clear permissions, and secure token handling. Never paste an email password or private API secret into this page.</p></div></div>
+        </section>
+
+        <section class="view-panel" id="view-settings" data-view-panel="settings" hidden>
+          <div class="page-heading"><div><p class="eyebrow">MAKE THIS SPACE YOURS</p><h1>Settings</h1><p class="page-subtitle">Personalize your workspace and manage your local data.</p></div></div>
+          <div class="settings-layout"><section class="panel settings-section"><div class="panel-heading"><div><p class="eyebrow">PROFILE</p><h2>Your details</h2></div></div><form id="profile-form" class="form-stack"><label>Display name<input id="profile-name-input" name="profileName" maxlength="40" required></label><button class="button button-primary form-submit" type="submit">Save profile</button></form></section><section class="panel settings-section"><div class="panel-heading"><div><p class="eyebrow">YOUR WORKSPACE DATA</p><h2>Backup and restore</h2></div></div><p class="muted-copy">Your assignments, events, grades, tasks, and resources are stored in this browser on this device.</p><div class="settings-actions"><button class="button button-secondary" id="backup-export" type="button">Download backup (.json)</button><button class="button button-secondary" id="backup-import-button" type="button">Restore backup</button><input id="backup-file-input" type="file" accept="application/json,.json" hidden></div></section><section class="panel settings-section danger-zone"><div class="panel-heading"><div><p class="eyebrow">RESET</p><h2>Clear local workspace</h2></div></div><p class="muted-copy">This removes VAYRO data saved in this browser. Export a backup first if you may want it later.</p><button class="button button-danger" id="clear-data-button" type="button">Clear my VAYRO data</button></section></div>
+          <p class="disclaimer-line">This version is a local prototype. It does not provide user accounts, cloud sync, or encrypted server storage.</p>
+        </section>
+      </div>
+
+      <footer class="app-footer"><span>VAYRO <span class="footer-divider">/</span> YOUR ACADEMIC SPACE</span><span>Built for thoughtful progress.</span></footer>
+    </main>
+  </div>
+
+  <dialog class="modal" id="assignment-dialog" aria-labelledby="assignment-dialog-title">
+    <form class="modal-form" id="assignment-form">
+      <div class="modal-heading"><div><p class="eyebrow">KEEP IT CLEAR</p><h2 id="assignment-dialog-title">New assignment</h2></div><button class="modal-close" type="button" data-close-dialog aria-label="Close dialog">×</button></div>
+      <input type="hidden" id="assignment-id">
+      <label>Assignment name<input id="assignment-title" maxlength="100" required placeholder="e.g. Chapter 4 problem set"></label>
+      <div class="form-row"><label>Subject<input id="assignment-subject" maxlength="40" required placeholder="e.g. Mathematics"></label><label>Due date<input id="assignment-due" type="date" required></label></div>
+      <label>Priority<select id="assignment-priority"><option value="normal">Normal</option><option value="high">High</option><option value="low">Low</option></select></label>
+      <label>Notes <span class="optional-label">(optional)</span><textarea id="assignment-notes" rows="3" maxlength="500" placeholder="What should you remember?"></textarea></label>
+      <div class="modal-actions"><button class="button button-secondary" type="button" data-close-dialog>Cancel</button><button class="button button-primary" type="submit">Save assignment</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="event-dialog" aria-labelledby="event-dialog-title">
+    <form class="modal-form" id="event-form">
+      <div class="modal-heading"><div><p class="eyebrow">MAKE TIME FOR IT</p><h2 id="event-dialog-title">New calendar event</h2></div><button class="modal-close" type="button" data-close-dialog aria-label="Close dialog">×</button></div>
+      <input type="hidden" id="event-id">
+      <label>Event title<input id="event-title" maxlength="100" required placeholder="e.g. Biology review"></label>
+      <div class="form-row"><label>Date<input id="event-date" type="date" required></label><label>Start time<input id="event-time" type="time"></label></div>
+      <div class="form-row"><label>Type<select id="event-type"><option>Class</option><option>Study session</option><option>Test</option><option>Personal</option><option>Other</option></select></label><label>Duration<select id="event-duration"><option value="30">30 minutes</option><option value="45">45 minutes</option><option value="60" selected>1 hour</option><option value="90">1.5 hours</option><option value="120">2 hours</option></select></label></div>
+      <label>Details <span class="optional-label">(optional)</span><textarea id="event-notes" rows="3" maxlength="500" placeholder="Location, chapters, or reminders"></textarea></label>
+      <div class="modal-actions"><button class="button button-secondary" type="button" data-close-dialog>Cancel</button><button class="button button-primary" type="submit">Save event</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="task-dialog" aria-labelledby="task-dialog-title">
+    <form class="modal-form" id="task-form">
+      <div class="modal-heading"><div><p class="eyebrow">ONE STEP AT A TIME</p><h2 id="task-dialog-title">New study task</h2></div><button class="modal-close" type="button" data-close-dialog aria-label="Close dialog">×</button></div>
+      <input type="hidden" id="task-id">
+      <label>What will you work on?<input id="task-title" maxlength="100" required placeholder="e.g. Review function transformations"></label>
+      <div class="form-row"><label>Subject<input id="task-subject" maxlength="40" placeholder="Optional"></label><label>Target date<input id="task-date" type="date"></label></div>
+      <div class="modal-actions"><button class="button button-secondary" type="button" data-close-dialog>Cancel</button><button class="button button-primary" type="submit">Add task</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="grade-dialog" aria-labelledby="grade-dialog-title">
+    <form class="modal-form" id="grade-form">
+      <div class="modal-heading"><div><p class="eyebrow">RECORD A RESULT</p><h2 id="grade-dialog-title">Add grade</h2></div><button class="modal-close" type="button" data-close-dialog aria-label="Close dialog">×</button></div>
+      <input type="hidden" id="grade-id">
+      <label>Assessment name<input id="grade-title" maxlength="100" required placeholder="e.g. Unit 2 quiz"></label>
+      <div class="form-row"><label>Subject<input id="grade-subject" maxlength="40" required placeholder="e.g. Geometry"></label><label>Date<input id="grade-date" type="date" required></label></div>
+      <div class="form-row"><label>Points earned<input id="grade-score" type="number" min="0" step="0.01" required placeholder="42"></label><label>Points possible<input id="grade-max" type="number" min="0.01" step="0.01" required placeholder="50"></label></div>
+      <p class="form-hint">VAYRO converts each result to a percentage and averages the recorded percentages equally.</p>
+      <div class="modal-actions"><button class="button button-secondary" type="button" data-close-dialog>Cancel</button><button class="button button-primary" type="submit">Save grade</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="material-dialog" aria-labelledby="material-dialog-title">
+    <form class="modal-form" id="material-form">
+      <div class="modal-heading"><div><p class="eyebrow">SAVE SOMETHING USEFUL</p><h2 id="material-dialog-title">Save resource</h2></div><button class="modal-close" type="button" data-close-dialog aria-label="Close dialog">×</button></div>
+      <input type="hidden" id="material-id">
+      <label>Resource title<input id="material-title" maxlength="100" required placeholder="e.g. Algebra review notes"></label>
+      <div class="form-row"><label>Subject<input id="material-subject" maxlength="40" placeholder="Optional"></label><label>Resource type<select id="material-type"><option>Notes</option><option>Study guide</option><option>Video</option><option>Article</option><option>Website</option><option>Other</option></select></label></div>
+      <label>Link <span class="optional-label">(optional)</span><input id="material-url" type="url" maxlength="500" placeholder="https://..."></label>
+      <label>Notes <span class="optional-label">(optional)</span><textarea id="material-notes" rows="3" maxlength="500" placeholder="What is useful about this resource?"></textarea></label>
+      <div class="modal-actions"><button class="button button-secondary" type="button" data-close-dialog>Cancel</button><button class="button button-primary" type="submit">Save resource</button></div>
+    </form>
+  </dialog>
+
+  <div class="toast-region" id="toast-region" role="status" aria-live="polite"></div>
 </body>
 </html>
