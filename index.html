@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="stylesheet" href="styles.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VAYRO | Your Academic Space</title>
@@ -8,36 +9,39 @@
 <body>
     <nav>
     <ul>
-      <li><a href="#home">Home</a></li>
-      <li><a href="#resources">Resources</a></li>
-      <li><a href="#tools">Tools</a></li>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="#assignments">Assignments</a></li>
+      <li><a href="#grades">Grades</a></li>
+      <li><a href="#calendar">Calendar</a></li>
+      <li><a href="#study-planner">Study Planner</a></li>
+      <li><a href="#analytics">Analytics</a></li>
+      <li><a href="#profile">Profile</a></li>
     </ul>
   </nav>
-
+<!-- Header section -->
   <header>
-    <h1>Welcome to VAYRO</h1>
+    <p> Today is: <span id="date-display"></span></p>
+    <h1>Welcome Back, Arnav.</h1>
   </header>
 
   <main>
-
-    <p>This is your academic space where you can access various resources and tools to enhance your learning experience.</p>
-
     <section id="agenda">
       <h2>Agenda</h2>
-      <p>Here you can view your upcoming academic schedule and important dates.</p>
+      <p>Here you can view your upcoming tasks and events.</p>
+    </section>
+    <section id="assignments">
+      <h2>Assignments</h2>
+      <p>Here you can view your assignments and their deadlines.</p>
+    </section>
+    <section id="focus">
+      <h2>Focus</h2>
+      <p>Here you can set your focus for the day and track your progress.</p>
     </section>
 
-    <section id="upcoming">
-      <h2>Upcoming tests</h2>
-      <p>Here you can view your upcoming tests and their schedules.</p>
-    </section>
 
-    <section id="studymaterials">
-      <h2>Study Materials</h2>
-      <p>Here you can access various study materials to enhance your learning experience.</p>
-    </section>
-    
   </main>
 
+
+  <script src="myscripts.js"></script>
 </body>
 </html>
