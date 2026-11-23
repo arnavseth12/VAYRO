@@ -37,12 +37,58 @@
 
       <div class="dashboard-content">
 <!-- Header section -->
-  <header>
-    <p> Today is: <span id="date-display"></span></p>
-    <h1>Welcome Back, Arnav.</h1>
-  </header>
+  <header class="dashboard-header">
 
+    <div class="welcome-block">
+
+      <p class="current-date">
+        <span id="date-display"></span>
+      </p>
+
+      <h1>
+        Welcome back, <span class="user-name">Arnav</span>
+      </h1>
+
+      <p class="welcome-subtitle">
+        Ready to make today count?
+      </p>
+
+    </div>
+
+    <div class="header-tools"
+
+    <div class="clock-display"
+    <span id="clock-display">--:--</span>
+    </div>
+
+    <span class="profile-avatar" aria-hidden="true">A</span>
+    
+  
+  </div>
+
+</header>
   <main>
+
+    <section class="stats-overview" aria-label="Acedemic overview">
+
+      <!-- Tasks completed-->
+       <div class="stat-card">
+        <p class="stat-value">12</p>
+        <p class="stat-label">Tasks Completed This Week</p>
+      </div>
+
+      <!-- Acedemic Average -->
+       <div class="stat-card">
+        <p class="stat-value">87%</p>
+        <p class="stat-label">Current Average</p>
+      </div>
+
+      <!-- study break -->
+       <div class="stat-card">
+        <p class="stat-value">7 days</p>
+        <p class="stat-label">Study Break</p>
+      </div>
+    </section>
 
     <!-- Dashboard widgets -->
     <section id="agenda">
