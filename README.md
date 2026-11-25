@@ -1,6 +1,8 @@
 
 # VAYRO
 
+![Vayro Homepage](VAYRO-HOMEPAGE.png)
+
 **Your academic work, organized in one calm workspace.**
 
 VAYRO is a responsive, browser-based academic workspace for planning assignments, tracking grades, managing study tasks, and building a consistent study routine. It has no account requirement, backend, or external dependencies.
