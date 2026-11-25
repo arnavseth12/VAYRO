@@ -1,11 +1,54 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Analytics | VAYRO</title><link rel="stylesheet" href="styles.css"><script src="app.js" defer></script></head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Analytics | Vayro</title>
+  <script>try{var t=localStorage.getItem("vayro-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
 <body data-page="analytics">
-<div class="shell"><aside class="sidebar"><a class="brand" href="index.html"><span class="brand-mark">V</span><span><strong>VAYRO</strong><small>ACADEMIC WORKSPACE</small></span></a><nav class="nav"><a class="nav-link" href="index.html"><span>01</span>Overview</a><a class="nav-link" href="assignments.html"><span>02</span>Assignments</a><a class="nav-link" href="calendar.html"><span>03</span>Calendar</a><a class="nav-link" href="planner.html"><span>04</span>Study planner</a><a class="nav-link" href="grades.html"><span>05</span>Grades</a><a class="nav-link" href="materials.html"><span>06</span>Study library</a><a class="nav-link active" href="analytics.html"><span>07</span>Analytics</a></nav><nav class="nav nav-secondary"><a class="nav-link" href="integrations.html"><span>08</span>Integrations</a><a class="nav-link" href="settings.html"><span>09</span>Settings</a></nav><div class="profile"><span class="avatar">A</span><div><strong class="profile-name">Arnav</strong><small>Personal workspace</small></div></div></aside>
-<main class="main"><header class="topbar"><p class="breadcrumb">Workspace <span>/</span> Analytics</p><div class="topbar-tools"><time id="live-date"></time><time id="live-clock" class="clock"></time></div></header><div class="content">
-<section class="page-heading"><div><p class="eyebrow">Analytics</p><h1>Review your pace.</h1><p>Assignment completion, focus time, and grades.</p></div></section>
-<div class="metric-grid"><article class="metric-card"><p class="eyebrow">Assignments</p><strong id="completion-rate">0%</strong><div class="progress"><span id="completion-bar"></span></div><small id="completion-detail"></small></article><article class="metric-card"><p class="eyebrow">Focus time</p><strong id="focus-total">0h</strong></article><article class="metric-card"><p class="eyebrow">Average</p><strong id="analytics-average">No data</strong></article></div>
-<section class="panel"><p class="eyebrow">By subject</p><div id="subject-bars" class="bar-list"></div></section>
-</div></main></div><div id="toast" class="toast"></div>
-</body></html>
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="index.html" aria-label="Vayro overview">Vayro</a>
+      <nav class="nav" aria-label="Main navigation">
+        <a class="nav-link" href="index.html">Overview</a>
+        <a class="nav-link" href="assignments.html">Assignments</a>
+        <a class="nav-link" href="calendar.html">Calendar</a>
+        <a class="nav-link" href="planner.html">Study planner</a>
+        <a class="nav-link" href="grades.html">Grades</a>
+        <a class="nav-link" href="materials.html">Study library</a>
+        <a class="nav-link active" href="analytics.html" aria-current="page">Analytics</a>
+      </nav>
+      <nav class="nav nav-secondary" aria-label="Account navigation">
+        <a class="nav-link" href="integrations.html">Integrations</a>
+        <a class="nav-link" href="settings.html">Settings</a>
+      </nav>
+      <div class="profile"><strong class="profile-name">Arnav</strong><small>Personal workspace</small></div>
+    </aside>
+    <main class="main">
+      <header class="page-head">
+        <h1>Analytics</h1>
+        <div class="head-tools">
+          <time id="live-date"></time><time id="live-clock"></time>
+          <div class="seg" role="group" aria-label="Theme"><button type="button" data-theme-choice="light" aria-pressed="false">Light</button><button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button></div>
+        </div>
+      </header>
+
+      <section class="metric-grid" aria-label="Summary">
+        <div class="figure"><small id="completion-detail"></small><div class="progress"><span id="completion-bar"></span></div><strong id="completion-rate">0%</strong><span>Assignments completed</span></div>
+        <div class="figure"><strong id="focus-total">0h</strong><span>Focus time</span></div>
+        <div class="figure"><strong id="analytics-average">No data</strong><span>Average</span></div>
+      </section>
+
+      <section>
+        <h2 class="section-title">By subject</h2>
+        <div id="subject-bars" class="bar-list"></div>
+      </section>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+</body>
+</html>

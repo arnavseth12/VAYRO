@@ -1,10 +1,51 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Integrations | VAYRO</title><link rel="stylesheet" href="styles.css"><script src="app.js" defer></script></head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Integrations | Vayro</title>
+  <script>try{var t=localStorage.getItem("vayro-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
 <body data-page="integrations">
-<div class="shell"><aside class="sidebar"><a class="brand" href="index.html"><span class="brand-mark">V</span><span><strong>VAYRO</strong><small>ACADEMIC WORKSPACE</small></span></a><nav class="nav"><a class="nav-link" href="index.html"><span>01</span>Overview</a><a class="nav-link" href="assignments.html"><span>02</span>Assignments</a><a class="nav-link" href="calendar.html"><span>03</span>Calendar</a><a class="nav-link" href="planner.html"><span>04</span>Study planner</a><a class="nav-link" href="grades.html"><span>05</span>Grades</a><a class="nav-link" href="materials.html"><span>06</span>Study library</a><a class="nav-link" href="analytics.html"><span>07</span>Analytics</a></nav><nav class="nav nav-secondary"><a class="nav-link active" href="integrations.html"><span>08</span>Integrations</a><a class="nav-link" href="settings.html"><span>09</span>Settings</a></nav><div class="profile"><span class="avatar">A</span><div><strong class="profile-name">Arnav</strong><small>Personal workspace</small></div></div></aside>
-<main class="main"><header class="topbar"><p class="breadcrumb">Workspace <span>/</span> Integrations</p><div class="topbar-tools"><time id="live-date"></time><time id="live-clock" class="clock"></time></div></header><div class="content">
-<section class="page-heading"><div><p class="eyebrow">Integrations</p><h1>Connect your tools.</h1><p>Use external services without storing account passwords here.</p></div></section>
-<div class="integration-grid"><article class="integration-card"><p class="eyebrow">Email</p><h2>Gmail</h2><p>Open your inbox in a new tab.</p><a class="button secondary" href="https://mail.google.com" target="_blank" rel="noreferrer">Open Gmail</a></article><article class="integration-card"><p class="eyebrow">Calendar</p><h2>Google Calendar</h2><p>Export VAYRO events as an .ics file.</p><button class="button secondary" type="button" data-export-calendar>Export .ics</button></article><article class="integration-card"><p class="eyebrow">Calendar</p><h2>Apple Calendar</h2><p>Import the exported .ics file on your device.</p><button class="button secondary" type="button" data-export-calendar>Export .ics</button></article></div>
-</div></main></div><div id="toast" class="toast"></div>
-</body></html>
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="index.html" aria-label="Vayro overview">Vayro</a>
+      <nav class="nav" aria-label="Main navigation">
+        <a class="nav-link" href="index.html">Overview</a>
+        <a class="nav-link" href="assignments.html">Assignments</a>
+        <a class="nav-link" href="calendar.html">Calendar</a>
+        <a class="nav-link" href="planner.html">Study planner</a>
+        <a class="nav-link" href="grades.html">Grades</a>
+        <a class="nav-link" href="materials.html">Study library</a>
+        <a class="nav-link" href="analytics.html">Analytics</a>
+      </nav>
+      <nav class="nav nav-secondary" aria-label="Account navigation">
+        <a class="nav-link active" href="integrations.html" aria-current="page">Integrations</a>
+        <a class="nav-link" href="settings.html">Settings</a>
+      </nav>
+      <div class="profile"><strong class="profile-name">Arnav</strong><small>Personal workspace</small></div>
+    </aside>
+    <main class="main">
+      <header class="page-head">
+        <h1>Integrations</h1>
+        <div class="head-tools">
+          <time id="live-date"></time><time id="live-clock"></time>
+          <div class="seg" role="group" aria-label="Theme"><button type="button" data-theme-choice="light" aria-pressed="false">Light</button><button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button></div>
+        </div>
+      </header>
+
+      <p class="intro">Vayro never stores account passwords. These links open the service or hand you a file.</p>
+
+      <div class="integration-grid">
+        <article class="integration-card"><h2>Gmail</h2><p>Open your inbox in a new tab.</p><a class="button secondary" href="https://mail.google.com" target="_blank" rel="noreferrer">Open Gmail</a></article>
+        <article class="integration-card"><h2>Google Calendar</h2><p>Export Vayro events as an .ics file.</p><button class="button secondary" type="button" data-export-calendar>Export .ics</button></article>
+        <article class="integration-card"><h2>Apple Calendar</h2><p>Import the exported .ics file on your device.</p><button class="button secondary" type="button" data-export-calendar>Export .ics</button></article>
+      </div>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+</body>
+</html>

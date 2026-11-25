@@ -1,12 +1,59 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Assignments | VAYRO</title><link rel="stylesheet" href="styles.css"><script src="app.js" defer></script></head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Assignments | Vayro</title>
+  <script>try{var t=localStorage.getItem("vayro-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
 <body data-page="assignments">
-<div class="shell"><aside class="sidebar"><a class="brand" href="index.html"><span class="brand-mark">V</span><span><strong>VAYRO</strong><small>ACADEMIC WORKSPACE</small></span></a><nav class="nav" aria-label="Main navigation"><a class="nav-link" href="index.html"><span>01</span>Overview</a><a class="nav-link active" href="assignments.html"><span>02</span>Assignments</a><a class="nav-link" href="calendar.html"><span>03</span>Calendar</a><a class="nav-link" href="planner.html"><span>04</span>Study planner</a><a class="nav-link" href="grades.html"><span>05</span>Grades</a><a class="nav-link" href="materials.html"><span>06</span>Study library</a><a class="nav-link" href="analytics.html"><span>07</span>Analytics</a></nav><nav class="nav nav-secondary"><a class="nav-link" href="integrations.html"><span>08</span>Integrations</a><a class="nav-link" href="settings.html"><span>09</span>Settings</a></nav><div class="profile"><span class="avatar">A</span><div><strong class="profile-name">Arnav</strong><small>Personal workspace</small></div></div></aside>
-<main class="main"><header class="topbar"><p class="breadcrumb">Workspace <span>/</span> Assignments</p><div class="topbar-tools"><time id="live-date"></time><time id="live-clock" class="clock"></time></div></header><div class="content">
-<section class="page-heading"><div><p class="eyebrow">Assignments</p><h1>Track the work.</h1><p>Set due dates and record what is finished.</p></div><button class="button primary" type="button" data-open="assignment">New assignment</button></section>
-<div class="toolbar"><div class="filter-row" aria-label="Assignment filters"><button type="button" class="active" data-filter="all">All</button><button type="button" data-filter="open">Open</button><button type="button" data-filter="done">Completed</button></div><input class="search" id="assignment-search" type="search" placeholder="Search assignments"></div>
-<section class="panel"><table class="data-table"><thead><tr><th>Assignment</th><th>Subject</th><th>Due</th><th>Status</th><th>Actions</th></tr></thead><tbody id="assignment-list"></tbody></table></section>
-</div></main></div><div id="toast" class="toast"></div>
-<dialog id="item-dialog"><form id="assignment-form" class="panel form-grid"><div class="field full"><span>Assignment name</span><input name="title" required></div><div class="field"><span>Subject</span><input name="subject" required></div><div class="field"><span>Due date</span><input name="date" type="date" required></div><div class="field full"><span>Notes</span><textarea name="notes"></textarea></div><div class="form-actions full"><button type="button" class="button secondary" data-close>Cancel</button><button type="submit" class="button primary">Save assignment</button></div></form></dialog>
-</body></html>
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="index.html" aria-label="Vayro overview">Vayro</a>
+      <nav class="nav" aria-label="Main navigation">
+        <a class="nav-link" href="index.html">Overview</a>
+        <a class="nav-link active" href="assignments.html" aria-current="page">Assignments</a>
+        <a class="nav-link" href="calendar.html">Calendar</a>
+        <a class="nav-link" href="planner.html">Study planner</a>
+        <a class="nav-link" href="grades.html">Grades</a>
+        <a class="nav-link" href="materials.html">Study library</a>
+        <a class="nav-link" href="analytics.html">Analytics</a>
+      </nav>
+      <nav class="nav nav-secondary" aria-label="Account navigation">
+        <a class="nav-link" href="integrations.html">Integrations</a>
+        <a class="nav-link" href="settings.html">Settings</a>
+      </nav>
+      <div class="profile"><strong class="profile-name">Arnav</strong><small>Personal workspace</small></div>
+    </aside>
+    <main class="main">
+      <header class="page-head">
+        <h1>Assignments</h1>
+        <div class="head-tools">
+          <time id="live-date"></time><time id="live-clock"></time>
+          <div class="seg" role="group" aria-label="Theme"><button type="button" data-theme-choice="light" aria-pressed="false">Light</button><button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button></div>
+        </div>
+      </header>
+
+      <div class="toolbar">
+        <div class="filter-row seg" role="group" aria-label="Assignment filters"><button type="button" class="active" data-filter="all">All</button><button type="button" data-filter="open">Open</button><button type="button" data-filter="done">Completed</button></div>
+        <div class="toolbar-actions">
+          <input class="search" id="assignment-search" type="search" placeholder="Search assignments" aria-label="Search assignments">
+          <button class="button primary" type="button" data-open="assignment">New assignment</button>
+        </div>
+      </div>
+
+      <section class="panel">
+        <table class="data-table">
+          <thead><tr><th>Assignment</th><th>Subject</th><th>Due</th><th>Status</th><th></th></tr></thead>
+          <tbody id="assignment-list"></tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+  <dialog id="item-dialog"><form id="assignment-form" class="panel form-grid"><div class="field full"><span>Assignment name</span><input name="title" required></div><div class="field"><span>Subject</span><input name="subject" required></div><div class="field"><span>Due date</span><input name="date" type="date" required></div><div class="field full"><span>Notes</span><textarea name="notes"></textarea></div><div class="form-actions full"><button type="button" class="button secondary" data-close>Cancel</button><button type="submit" class="button primary">Save assignment</button></div></form></dialog>
+</body>
+</html>

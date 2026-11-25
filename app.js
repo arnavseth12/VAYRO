@@ -84,6 +84,40 @@
     const now = new Date();
     if ($("#live-date")) $("#live-date").textContent = now.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
     if ($("#live-clock")) $("#live-clock").textContent = now.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+    if ($("#today-title")) $("#today-title").textContent = now.toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" });
+  }
+
+  function currentTheme() {
+    return document.documentElement.dataset.theme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  }
+
+  function syncThemeButtons() {
+    $$("[data-theme-choice]").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.themeChoice === currentTheme())));
+  }
+
+  function bindTheme() {
+    $$("[data-theme-choice]").forEach((button) => button.addEventListener("click", () => {
+      document.documentElement.dataset.theme = button.dataset.themeChoice;
+      try { localStorage.setItem("vayro-theme", button.dataset.themeChoice); } catch {}
+      syncThemeButtons();
+    }));
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", syncThemeButtons);
+    syncThemeButtons();
+  }
+
+  function renderWeek() {
+    const host = $("#week-ruler");
+    if (!host) return;
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);
+    start.setDate(start.getDate() - start.getDay());
+    host.innerHTML = Array.from({ length: 7 }, (_, index) => {
+      const date = new Date(start);
+      date.setDate(start.getDate() + index);
+      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+      const count = state.events.filter((event) => event.date === key).length + state.assignments.filter((item) => !item.done && item.date === key).length;
+      return `<div class="week-day${key === todayISO() ? " today" : ""}"><span class="tick"></span><span class="dow">${date.toLocaleDateString(undefined, { weekday: "short" })}</span><span class="dnum">${date.getDate()}</span><span class="dcount">${count || "·"}</span></div>`;
+    }).join("");
   }
 
   function renderOverview() {
@@ -102,10 +136,12 @@
     $("#focus-count").textContent = `${Math.floor(focusMinutes / 60)}h ${focusMinutes % 60}m`;
 
     const agenda = state.events.filter((event) => event.date === todayISO()).sort((a, b) => (a.time || "").localeCompare(b.time || ""));
-    $("#today-list").innerHTML = agenda.length ? agenda.map((event) => `<div class="agenda-row"><time>${formatTime(event.time)}</time><span><strong>${escapeHTML(event.title)}</strong><small>${escapeHTML(event.type)}</small></span></div>`).join("") : `<div class="empty">No events scheduled today.</div>`;
+    const nowTime = `${String(new Date().getHours()).padStart(2, "0")}:${String(new Date().getMinutes()).padStart(2, "0")}`;
+    renderWeek();
+    $("#today-list").innerHTML = agenda.length ? agenda.map((event) => `<div class="agenda-row${event.time && event.time < nowTime ? " past" : ""}"><time>${formatTime(event.time)}</time><span><strong>${escapeHTML(event.title)}</strong><small>${escapeHTML(event.type)}</small></span></div>`).join("") : `<div class="empty">No events scheduled today.</div>`;
 
     const upcoming = open.slice().sort((a, b) => a.date.localeCompare(b.date)).slice(0, 4);
-    $("#next-assignment-list").innerHTML = upcoming.length ? upcoming.map((item) => `<div class="agenda-row"><time>${shortDate(item.date)}</time><span><strong>${escapeHTML(item.title)}</strong><small>${escapeHTML(item.subject)}</small></span></div>`).join("") : `<div class="empty">No open assignments.</div>`;
+    $("#next-assignment-list").innerHTML = upcoming.length ? upcoming.map((item) => `<div class="agenda-row"><time${item.date < todayISO() ? ' class="late"' : ""}>${shortDate(item.date)}${item.date < todayISO() ? ", late" : ""}</time><span><strong>${escapeHTML(item.title)}</strong><small>${escapeHTML(item.subject)}</small></span></div>`).join("") : `<div class="empty">No open assignments.</div>`;
   }
 
   function renderAssignments() {
@@ -117,7 +153,7 @@
       const filterMatch = filter === "all" || (filter === "done" ? item.done : !item.done);
       return filterMatch && `${item.title} ${item.subject} ${item.notes || ""}`.toLowerCase().includes(query);
     }).sort((a, b) => a.date.localeCompare(b.date));
-    list.innerHTML = rows.length ? rows.map((item) => `<tr><td><strong>${escapeHTML(item.title)}</strong><small>${escapeHTML(item.notes || "No notes")}</small></td><td>${escapeHTML(item.subject)}</td><td>${shortDate(item.date)}</td><td><span class="tag ${item.done ? "done" : item.date < todayISO() ? "urgent" : ""}">${item.done ? "Completed" : item.date < todayISO() ? "Overdue" : "Open"}</span></td><td><div class="row-actions"><button type="button" data-action="toggle-assignment" data-id="${item.id}">${item.done ? "Reopen" : "Complete"}</button><button type="button" data-action="delete-assignment" data-id="${item.id}">Delete</button></div></td></tr>`).join("") : `<tr><td colspan="5"><div class="empty">No assignments match this view.</div></td></tr>`;
+    list.innerHTML = rows.length ? rows.map((item) => `<tr><td><strong>${escapeHTML(item.title)}</strong><small>${escapeHTML(item.notes || "No notes")}</small></td><td>${escapeHTML(item.subject)}</td><td class="mono${!item.done && item.date < todayISO() ? " late" : ""}">${shortDate(item.date)}</td><td><span class="tag ${item.done ? "done" : item.date < todayISO() ? "urgent" : ""}">${item.done ? "Completed" : item.date < todayISO() ? "Overdue" : "Open"}</span></td><td><div class="row-actions"><button type="button" data-action="toggle-assignment" data-id="${item.id}">${item.done ? "Reopen" : "Complete"}</button><button type="button" data-action="delete-assignment" data-id="${item.id}">Delete</button></div></td></tr>`).join("") : `<tr><td colspan="5"><div class="empty">No assignments match this view.</div></td></tr>`;
   }
 
   function renderCalendar() {
@@ -134,7 +170,7 @@
       date.setDate(start.getDate() + index);
       const iso = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
       const events = state.events.filter((event) => event.date === iso).slice(0, 2);
-      cells.push(`<button type="button" class="calendar-cell ${date.getMonth() !== month ? "muted" : ""} ${iso === selectedDate ? "selected" : ""}" data-date="${iso}"><strong>${date.getDate()}</strong>${events.map((event) => `<span class="calendar-dot">${escapeHTML(event.title)}</span>`).join("")}</button>`);
+      cells.push(`<button type="button" class="calendar-cell ${date.getMonth() !== month ? "muted" : ""} ${iso === selectedDate ? "selected" : ""} ${iso === todayISO() ? "today" : ""}" data-date="${iso}"><strong>${date.getDate()}</strong>${events.map((event) => `<span class="calendar-dot">${escapeHTML(event.title)}</span>`).join("")}</button>`);
     }
     grid.innerHTML = cells.join("");
     renderSelectedDay();
@@ -150,7 +186,7 @@
     const list = $("#task-list");
     if (!list) return;
     const tasks = state.tasks.slice().sort((a, b) => (Number(a.done) - Number(b.done)) || (a.date || "9999").localeCompare(b.date || "9999"));
-    list.innerHTML = tasks.length ? `<table class="data-table"><tbody>${tasks.map((task) => `<tr><td><strong>${escapeHTML(task.title)}</strong><small>${escapeHTML(task.subject || "No subject")}</small></td><td>${task.date ? shortDate(task.date) : "No date"}</td><td><span class="tag ${task.done ? "done" : ""}">${task.done ? "Completed" : "Open"}</span></td><td><div class="row-actions"><button type="button" data-action="toggle-task" data-id="${task.id}">${task.done ? "Reopen" : "Complete"}</button><button type="button" data-action="delete-task" data-id="${task.id}">Delete</button></div></td></tr>`).join("")}</tbody></table>` : `<div class="empty">No study tasks yet.</div>`;
+    list.innerHTML = tasks.length ? `<table class="data-table"><tbody>${tasks.map((task) => `<tr><td><strong>${escapeHTML(task.title)}</strong><small>${escapeHTML(task.subject || "No subject")}</small></td><td class="mono">${task.date ? shortDate(task.date) : "No date"}</td><td><span class="tag ${task.done ? "done" : ""}">${task.done ? "Completed" : "Open"}</span></td><td><div class="row-actions"><button type="button" data-action="toggle-task" data-id="${task.id}">${task.done ? "Reopen" : "Complete"}</button><button type="button" data-action="delete-task" data-id="${task.id}">Delete</button></div></td></tr>`).join("")}</tbody></table>` : `<div class="empty">No study tasks yet.</div>`;
   }
 
   function renderGrades() {
@@ -162,7 +198,7 @@
     if ($("#grade-subject-count")) $("#grade-subject-count").textContent = new Set(state.grades.map((grade) => grade.subject)).size;
     list.innerHTML = state.grades.length ? state.grades.slice().sort((a, b) => b.date.localeCompare(a.date)).map((grade) => {
       const percent = Math.round(Number(grade.score) / Number(grade.max) * 100);
-      return `<tr><td><strong>${escapeHTML(grade.title)}</strong></td><td>${escapeHTML(grade.subject)}</td><td>${shortDate(grade.date)}</td><td>${escapeHTML(String(grade.score))}/${escapeHTML(String(grade.max))} <span class="tag">${percent}%</span></td><td><div class="row-actions"><button type="button" data-action="delete-grade" data-id="${grade.id}">Delete</button></div></td></tr>`;
+      return `<tr><td><strong>${escapeHTML(grade.title)}</strong></td><td>${escapeHTML(grade.subject)}</td><td class="mono">${shortDate(grade.date)}</td><td class="mono">${escapeHTML(String(grade.score))}/${escapeHTML(String(grade.max))} <span class="tag score">${percent}%</span></td><td><div class="row-actions"><button type="button" data-action="delete-grade" data-id="${grade.id}">Delete</button></div></td></tr>`;
     }).join("") : `<tr><td colspan="5"><div class="empty">No grades recorded.</div></td></tr>`;
   }
 
@@ -476,6 +512,7 @@
   bindDataActions();
   bindRows();
   bindCalendarExport();
+  bindTheme();
   updateTime();
   setInterval(updateTime, 1000);
   renderAll();
