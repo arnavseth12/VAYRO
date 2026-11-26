@@ -14,6 +14,7 @@ New students can use the short, email-free setup at `signup.html` to tailor thei
 - **Daily overview** - See open assignments, upcoming deadlines, today's schedule, and focus time at a glance.
 - **Week at a glance** - Open any day directly in the calendar and see its deadlines and events.
 - **Guided setup** - Choose a study pace and goals before adding any personal data; get a suggested first step.
+- **Study companion** - Hatch a pixel-art buddy during setup, then watch its look change with completed focus sessions.
 - **Quick links** - Jump from the overview to assignments, planning, or your calendar.
 - **Assignments** - Create, search, filter, complete, and delete assignments.
 - **Calendar** - Schedule classes, tests, study sessions, and personal events.
@@ -66,6 +67,7 @@ Use **Settings > Backup** to export or import a JSON backup. Clearing browser st
 ```text
 index.html       Daily overview and focus timer
 signup.html      Email-free guided workspace setup
+companion.js     Shared pixel-art study companion
 assignments.html Assignment management
 calendar.html    Calendar and event planning
 planner.html     Study task planner

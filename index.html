@@ -7,6 +7,7 @@
   <script>try{var t=localStorage.getItem("vayro-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script src="companion.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body data-page="overview">
@@ -70,6 +71,18 @@
           </section>
         </div>
         <div class="side-col">
+          <section class="home-companion" aria-label="Your study companion">
+            <button class="home-companion-greet" type="button" data-companion-greet aria-label="Say hello to Moss">
+              <span class="companion-motion" data-companion-motion data-motion="idle"><span class="companion-art-host" data-companion-art="home"></span></span>
+            </button>
+            <div class="home-companion-copy">
+              <span class="eyebrow">STUDY BUDDY</span>
+              <h2 data-companion-name>Moss</h2>
+              <span class="home-companion-stage" data-companion-stage>New sprout</span>
+              <p data-companion-message>Curious and ready whenever you are.</p>
+              <small>Grows with study sessions, at your pace.</small>
+            </div>
+          </section>
           <section class="card quick-card" aria-label="Quick links">
             <div><span class="eyebrow">Quick links</span><h2>One small next step</h2></div>
             <a href="assignments.html"><span>Capture an assignment</span><span aria-hidden="true">↗</span></a>

@@ -90,6 +90,117 @@
     $$(".avatar").forEach((node) => node.textContent = state.profileName.charAt(0).toUpperCase());
   }
 
+  const companionStages = ["New sprout", "Pocket scout", "Trail finder", "Storykeeper"];
+  const companionThresholds = [0, 3, 8, 15];
+  let companionCard = null;
+  let companionStatus = "Curious and ready whenever you are.";
+  let companionMotionTimer = null;
+  let companionResetTimer = null;
+
+  function companionName() {
+    return String(state.companion?.name || "Moss").trim().slice(0, 16) || "Moss";
+  }
+
+  function companionGrowth() {
+    const sessions = Array.isArray(state.sessions) ? state.sessions : [];
+    const completed = sessions.filter((session) => session && session.done).length;
+    let stage = 0;
+    for (let index = 1; index < companionThresholds.length; index += 1) {
+      if (completed >= companionThresholds[index]) stage = index;
+    }
+    const start = companionThresholds[stage];
+    const next = companionThresholds[stage + 1];
+    const goal = next === undefined ? 0 : next - start;
+    const progress = goal ? Math.min(goal, completed - start) : 0;
+    return { completed, stage, goal, progress, percent: goal ? Math.round(progress / goal * 100) : 100 };
+  }
+
+  function setCompanionMotion(motion, duration) {
+    if (companionResetTimer) window.clearTimeout(companionResetTimer);
+    $$("[data-companion-motion]").forEach((node) => { node.dataset.motion = motion; });
+    if (duration > 0) {
+      companionResetTimer = window.setTimeout(() => {
+        $$("[data-companion-motion]").forEach((node) => { node.dataset.motion = "idle"; });
+        companionStatus = "Curious and ready whenever you are.";
+        $$("[data-companion-message]").forEach((node) => { node.textContent = companionStatus; });
+      }, duration);
+    }
+  }
+
+  function setCompanionMood(message, motion, duration) {
+    companionStatus = message;
+    $$("[data-companion-message]").forEach((node) => { node.textContent = message; });
+    setCompanionMotion(motion || "react", duration === undefined ? 1800 : duration);
+  }
+
+  function renderCompanion() {
+    const sidebar = $(".sidebar");
+    if (!companionCard && sidebar) {
+      companionCard = document.createElement("section");
+      companionCard.className = "companion-card";
+      companionCard.setAttribute("aria-label", "Study companion");
+      companionCard.innerHTML =
+        '<span class="companion-kicker">STUDY BUDDY</span>' +
+        '<div class="companion-main">' +
+          '<button class="companion-greet" type="button" data-companion-greet aria-label="Say hello to Moss">' +
+            '<span class="companion-motion" data-companion-motion data-motion="idle"><span class="companion-art-host" data-companion-art="sidebar"></span></span>' +
+          '</button>' +
+          '<div class="companion-info"><strong class="companion-name" data-companion-name>Moss</strong><span class="companion-stage" data-companion-stage>New sprout</span><span class="companion-note" data-companion-message>Curious and ready whenever you are.</span></div>' +
+        '</div>' +
+        '<div class="companion-growth-copy"><span>Next look</span><span data-companion-progress-label>0 / 3</span></div>' +
+        '<div class="companion-progress" data-companion-progress role="progressbar" aria-label="Progress toward a new companion look" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0"><span></span></div>';
+      const profile = $(".profile", sidebar);
+      sidebar.insertBefore(companionCard, profile);
+    }
+
+    const growth = companionGrowth();
+    const name = companionName();
+    $$("[data-companion-name]").forEach((node) => { node.textContent = name; });
+    $$("[data-companion-stage]").forEach((node) => { node.textContent = companionStages[growth.stage]; });
+    $$("[data-companion-art]").forEach((host) => {
+      if (host.dataset.stage !== String(growth.stage)) {
+        host.innerHTML = window.VayroPet.sprite(growth.stage);
+        host.dataset.stage = String(growth.stage);
+      }
+    });
+    $$("[data-companion-greet]").forEach((button) => {
+      button.setAttribute("aria-label", "Say hello to " + name);
+      if (button.dataset.companionBound) return;
+      button.dataset.companionBound = "true";
+      button.addEventListener("click", () => {
+        const greetings = [name + " found a tiny leaf.", name + " is curious about your next idea.", name + " is ready whenever you are."];
+        setCompanionMood(greetings[Math.floor(Math.random() * greetings.length)], "react", 1900);
+      });
+    });
+    $$("[data-companion-message]").forEach((node) => { node.textContent = companionStatus; });
+
+    const label = $("[data-companion-progress-label]");
+    const bar = $("[data-companion-progress]");
+    if (label && bar) {
+      if (growth.goal) {
+        label.textContent = growth.progress + " / " + growth.goal;
+        bar.hidden = false;
+        bar.setAttribute("aria-valuemax", String(growth.goal));
+        bar.setAttribute("aria-valuenow", String(growth.progress));
+        bar.setAttribute("aria-valuetext", growth.progress + " of " + growth.goal + " focus sessions. Growth happens at any pace.");
+        $("span", bar).style.width = growth.percent + "%";
+      } else {
+        label.textContent = "All trail looks found";
+        bar.hidden = true;
+      }
+    }
+  }
+
+  function scheduleCompanionWander() {
+    if (companionMotionTimer) window.clearTimeout(companionMotionTimer);
+    companionMotionTimer = window.setTimeout(() => {
+      if (!timerRunning && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        setCompanionMotion("explore", 2400);
+      }
+      scheduleCompanionWander();
+    }, 4800 + Math.floor(Math.random() * 4600));
+  }
+
   function updateTime() {
     const now = new Date();
     if ($("#live-date")) $("#live-date").textContent = now.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
@@ -331,6 +442,7 @@
         timerId = null;
         timerRunning = false;
         renderTimer();
+        setCompanionMood(companionName() + " is exploring nearby.", "explore", 2200);
         return;
       }
       timerRunning = true;
@@ -342,15 +454,21 @@
           clearInterval(timerId);
           timerId = null;
           timerRunning = false;
+          const previousStage = companionGrowth().stage;
           state.sessions.push({ id: makeId(), date: todayISO(), minutes: selectedMinutes, done: true, assignmentId: activeFocusAssignment?.id || "", title: activeFocusAssignment?.title || "Independent study" });
           activeFocusAssignment = null;
           saveState();
           remainingSeconds = selectedMinutes * 60;
-          showToast("Focus session saved.");
+          renderCompanion();
+          const newStage = companionGrowth().stage;
+          const petName = companionName();
+          setCompanionMood(newStage > previousStage ? petName + " found a new trail look!" : "That was a lovely study adventure.", "react", 2600);
+          showToast(newStage > previousStage ? petName + " found a new look!" : "Focus session saved. Nicely done.");
         }
         renderTimer();
       }, 1000);
       renderTimer();
+      setCompanionMood(companionName() + " found a cozy focus spot.", "run", 1800);
     });
     $$(".preset").forEach((button) => button.addEventListener("click", () => {
       clearInterval(timerId);
@@ -565,6 +683,7 @@
 
   function renderAll() {
     renderProfile();
+    renderCompanion();
     const page = document.body.dataset.page;
     if (page === "overview") { renderOverview(); bindTimer(); }
     if (page === "assignments") renderAssignments();
@@ -597,4 +716,5 @@
   updateTime();
   setInterval(updateTime, 1000);
   renderAll();
+  scheduleCompanionWander();
 })();
