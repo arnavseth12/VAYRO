@@ -93,7 +93,7 @@
   const companionStages = ["New sprout", "Pocket scout", "Trail finder", "Storykeeper"];
   const companionThresholds = [0, 3, 8, 15];
   let companionCard = null;
-  let companionStatus = "Curious and ready whenever you are.";
+  let companionStatus = "Ready when you are.";
   let companionMotionTimer = null;
   let companionResetTimer = null;
 
@@ -121,7 +121,7 @@
     if (duration > 0) {
       companionResetTimer = window.setTimeout(() => {
         $$("[data-companion-motion]").forEach((node) => { node.dataset.motion = "idle"; });
-        companionStatus = "Curious and ready whenever you are.";
+        companionStatus = "Ready when you are.";
         $$("[data-companion-message]").forEach((node) => { node.textContent = companionStatus; });
       }, duration);
     }
@@ -145,7 +145,7 @@
           '<button class="companion-greet" type="button" data-companion-greet aria-label="Say hello to Moss">' +
             '<span class="companion-motion" data-companion-motion data-motion="idle"><span class="companion-art-host" data-companion-art="sidebar"></span></span>' +
           '</button>' +
-          '<div class="companion-info"><strong class="companion-name" data-companion-name>Moss</strong><span class="companion-stage" data-companion-stage>New sprout</span><span class="companion-note" data-companion-message>Curious and ready whenever you are.</span></div>' +
+          '<div class="companion-info"><strong class="companion-name" data-companion-name>Moss</strong><span class="companion-stage" data-companion-stage>New sprout</span><span class="companion-note" data-companion-message>Ready when you are.</span></div>' +
         '</div>' +
         '<div class="companion-growth-copy"><span>Next look</span><span data-companion-progress-label>0 / 3</span></div>' +
         '<div class="companion-progress" data-companion-progress role="progressbar" aria-label="Progress toward a new companion look" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0"><span></span></div>';
@@ -209,7 +209,7 @@
   }
 
   function currentTheme() {
-    return document.documentElement.dataset.theme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    return document.documentElement.dataset.theme || "dark";
   }
 
   function syncThemeButtons() {
@@ -430,6 +430,11 @@
     const display = $("#timer-display");
     if (!display) return;
     display.textContent = `${String(Math.floor(remainingSeconds / 60)).padStart(2, "0")}:${String(remainingSeconds % 60).padStart(2, "0")}`;
+    const phase = $("[data-moon-phase]");
+    if (phase) {
+      const elapsed = Math.max(0, selectedMinutes * 60 - remainingSeconds);
+      phase.dataset.phase = String(Math.min(5, Math.floor(elapsed / (selectedMinutes * 60) * 6)));
+    }
     if ($("#timer-toggle")) $("#timer-toggle").textContent = timerRunning ? "Pause" : "Start";
   }
 
@@ -442,7 +447,7 @@
         timerId = null;
         timerRunning = false;
         renderTimer();
-        setCompanionMood(companionName() + " is exploring nearby.", "explore", 2200);
+        setCompanionMood(companionName() + " is exploring nearby. Your progress is saved.", "explore", 2200);
         return;
       }
       timerRunning = true;
@@ -468,7 +473,7 @@
         renderTimer();
       }, 1000);
       renderTimer();
-      setCompanionMood(companionName() + " found a cozy focus spot.", "run", 1800);
+      setCompanionMood(companionName() + " is keeping you company. Breaks are always okay.", "study", 0);
     });
     $$(".preset").forEach((button) => button.addEventListener("click", () => {
       clearInterval(timerId);
@@ -478,6 +483,7 @@
       remainingSeconds = selectedMinutes * 60;
       $$(".preset").forEach((item) => item.classList.toggle("active", item === button));
       renderTimer();
+      setCompanionMood(companionName() + " is ready whenever you are.", "idle", 0);
     }));
   }
 
@@ -487,49 +493,6 @@
     const form = $("form", dialog);
     if (form) form.reset();
     dialog.showModal();
-  }
-
-  function bindForms() {
-    const eventForm = $("#event-form");
-    if (eventForm) eventForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const data = Object.fromEntries(new FormData(eventForm));
-      state.events.push({ id: makeId(), title: data.title, date: data.date, time: data.time, type: data.type, duration: Number(data.duration), notes: data.notes });
-      saveState();
-      $("#item-dialog").close();
-      renderAll();
-      showToast("Event saved.");
-    });
-    const taskForm = $("#task-form");
-    if (taskForm) taskForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const data = Object.fromEntries(new FormData(taskForm));
-      state.tasks.push({ id: makeId(), title: data.title, subject: data.subject, date: data.date, done: false });
-      saveState();
-      $("#item-dialog").close();
-      renderAll();
-      showToast("Task saved.");
-    });
-    const gradeForm = $("#grade-form");
-    if (gradeForm) gradeForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const data = Object.fromEntries(new FormData(gradeForm));
-      state.grades.push({ id: makeId(), title: data.title, subject: data.subject, date: data.date, score: Number(data.score), max: Number(data.max) });
-      saveState();
-      $("#item-dialog").close();
-      renderAll();
-      showToast("Grade saved.");
-    });
-    const materialForm = $("#material-form");
-    if (materialForm) materialForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const data = Object.fromEntries(new FormData(materialForm));
-      state.materials.push({ id: makeId(), title: data.title, subject: data.subject, type: data.type, url: data.url, notes: data.notes });
-      saveState();
-      $("#item-dialog").close();
-      renderAll();
-      showToast("Resource saved.");
-    });
   }
 
   function bindDataActions() {
@@ -685,7 +648,7 @@
     renderProfile();
     renderCompanion();
     const page = document.body.dataset.page;
-    if (page === "overview") { renderOverview(); bindTimer(); }
+    if (page === "overview") renderOverview();
     if (page === "assignments") renderAssignments();
     if (page === "calendar") renderCalendar();
     if (page === "planner") renderTasks();
@@ -694,7 +657,6 @@
     if (page === "analytics") renderAnalytics();
     if (page === "settings") {
       $("#profile-name").value = state.profileName;
-      bindSettings();
     }
   }
 
@@ -713,6 +675,8 @@
   bindRows();
   bindCalendarExport();
   bindTheme();
+  bindTimer();
+  bindSettings();
   updateTime();
   setInterval(updateTime, 1000);
   renderAll();

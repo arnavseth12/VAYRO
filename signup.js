@@ -19,6 +19,15 @@
   const buddyNameField = document.querySelector("#buddy-name-field");
   const finish = document.querySelector("#setup-finish");
   const actions = document.querySelector("#setup-actions");
+  const moonNote = document.querySelector("#moon-signup-note");
+  const stepHints = [
+    "Start with the closest study stage. There’s no wrong answer, and you can change it later.",
+    "Choose anything you’d like to keep together. You can skip a category that doesn’t fit.",
+    "Pick the part of the week that feels hardest. I’ll use it to suggest a small first move.",
+    "Choose a pace that feels kind to your real week. It’s a starting point, not a promise.",
+    "Add a display name if you like. Your answers stay in this browser.",
+    "Tap the little egg to meet Moss. Moss grows when you finish focus sessions, whenever that happens."
+  ];
   let petHatched = false;
   let petHatching = false;
   let currentStep = 0;
@@ -44,8 +53,10 @@
   function updateProgress() {
     stepCount.textContent = `Step ${currentStep + 1} of ${steps.length}`;
     caption.textContent = stepCaptions[currentStep];
+    progress.setAttribute("aria-valuemax", String(steps.length));
     progress.setAttribute("aria-valuenow", String(currentStep + 1));
     progressFill.style.width = `${((currentStep + 1) / steps.length) * 100}%`;
+    if (moonNote) moonNote.textContent = stepHints[currentStep];
     backButton.disabled = currentStep === 0;
     nextButton.disabled = !hasAnswer();
     nextButton.innerHTML = currentStep === steps.length - 1 ? 'Build my workspace <span aria-hidden="true">→</span>' : 'Next <span aria-hidden="true">→</span>';
@@ -100,7 +111,7 @@
       buddyNameField.hidden = false;
       updateProgress();
       companionNameInput.focus();
-    }, 650);
+    }, 900);
   }
 
   function completeSetup() {
@@ -137,8 +148,7 @@
     }
 
     document.querySelector("#finish-name").textContent = profileName;
-    document.querySelector("#finish-detail").textContent = `${selections.stage || "Your studies"} · ${selections.pace || "Your"} pace · saved on this device`;
-    document.querySelector("#finish-detail").textContent = chosenPetName() + " is ready to explore with you.";
+    document.querySelector("#finish-detail").textContent = `${chosenPetName()} is ready to explore with you · ${selections.pace || "Your"} pace saved on this device.`;
     steps.forEach((step) => { step.hidden = true; });
     document.querySelector(".onboarding-progress-wrap").hidden = true;
     actions.hidden = true;
