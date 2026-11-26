@@ -5,18 +5,23 @@
 
 **Your academic work, organized in one calm workspace.**
 
-VAYRO is a responsive, browser-based academic workspace for planning assignments, tracking grades, managing study tasks, and building a consistent study routine. It has no account requirement, backend, or external dependencies.
+VAYRO is a responsive, browser-based academic workspace for planning assignments, tracking grades, managing study tasks, and building a consistent study routine. It has no account requirement or backend, and needs no package installation.
+
+New students can use the short, email-free setup at `signup.html` to tailor their workspace before exploring. Setup answers and workspace data stay in the current browser; this demo does not create an online account or sync between devices.
 
 ## Features
 
 - **Daily overview** - See open assignments, upcoming deadlines, today's schedule, and focus time at a glance.
+- **Week at a glance** - Open any day directly in the calendar and see its deadlines and events.
+- **Guided setup** - Choose a study pace and goals before adding any personal data; get a suggested first step.
+- **Quick links** - Jump from the overview to assignments, planning, or your calendar.
 - **Assignments** - Create, search, filter, complete, and delete assignments.
 - **Calendar** - Schedule classes, tests, study sessions, and personal events.
 - **Study planner** - Break coursework into manageable study tasks.
 - **Grades** - Record scores and calculate subject averages automatically.
 - **Study library** - Save useful links, notes, guides, videos, and resources.
-- **Analytics** - Review assignment completion, focus time, and performance by subject.
-- **Focus timer** - Run 25, 45, or 60-minute study sessions.
+- **Analytics** - Review assignment completion, seven-day focus activity, and performance by subject.
+- **Focus timer** - Run 25, 45, or 60-minute study sessions and attach each session to an assignment.
 - **Calendar export** - Download VAYRO events as an `.ics` file.
 - **Local backups** - Export and import workspace data as JSON.
 
@@ -45,7 +50,7 @@ On Windows, use `start index.html`. On Linux, use `xdg-open index.html`.
 From the project directory:
 
 ```bash
-python3 -m http.server 3000
+node preview-server.js
 ```
 
 Then visit [http://localhost:3000](http://localhost:3000).
@@ -60,6 +65,7 @@ Use **Settings > Backup** to export or import a JSON backup. Clearing browser st
 
 ```text
 index.html       Daily overview and focus timer
+signup.html      Email-free guided workspace setup
 assignments.html Assignment management
 calendar.html    Calendar and event planning
 planner.html     Study task planner
@@ -69,6 +75,8 @@ analytics.html   Progress and performance analytics
 integrations.html External tool links and calendar export
 settings.html    Profile, backup, and data reset
 app.js           Application logic and local data storage
+signup.js        Guided setup and local profile preferences
+preview-server.js Local-only preview server (no dependencies)
 styles.css       Responsive visual design
 ```
 
@@ -77,6 +85,8 @@ styles.css       Responsive visual design
 - HTML5
 - CSS3
 - Vanilla JavaScript
+
+The visual design direction was adapted from [unslop by Damir Sokolovsky](https://github.com/heydamir/unslop), licensed under CC BY 4.0.
 
 ## Roadmap
 

@@ -11,7 +11,7 @@
   }
 
   function emptyState() {
-    return { profileName: "Arnav", assignments: [], events: [], tasks: [], grades: [], materials: [], sessions: [] };
+    return { profileName: "Student", assignments: [], events: [], tasks: [], grades: [], materials: [], sessions: [] };
   }
 
   function loadState() {
@@ -26,10 +26,20 @@
   let state = loadState();
   let calendarDate = new Date();
   let selectedDate = todayISO();
+  const requestedDate = new URLSearchParams(window.location.search).get("date");
+  if (requestedDate && /^\d{4}-\d{2}-\d{2}$/.test(requestedDate)) {
+    const [year, month, day] = requestedDate.split("-").map(Number);
+    const parsedDate = new Date(year, month - 1, day);
+    if (parsedDate.getFullYear() === year && parsedDate.getMonth() === month - 1 && parsedDate.getDate() === day) {
+      calendarDate = parsedDate;
+      selectedDate = requestedDate;
+    }
+  }
   let remainingSeconds = 25 * 60;
   let timerId = null;
   let timerRunning = false;
   let selectedMinutes = 25;
+  let activeFocusAssignment = null;
 
   function saveState() {
     localStorage.setItem(storageKey, JSON.stringify(state));
@@ -111,13 +121,45 @@
     const start = new Date();
     start.setHours(0, 0, 0, 0);
     start.setDate(start.getDate() - start.getDay());
+    const end = new Date(start);
+    end.setDate(start.getDate() + 6);
+    if ($("#week-range")) {
+      const startLabel = start.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+      const endLabel = end.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+      $("#week-range").textContent = `${startLabel} – ${endLabel}`;
+    }
     host.innerHTML = Array.from({ length: 7 }, (_, index) => {
       const date = new Date(start);
       date.setDate(start.getDate() + index);
       const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-      const count = state.events.filter((event) => event.date === key).length + state.assignments.filter((item) => !item.done && item.date === key).length;
+      const eventCount = state.events.filter((event) => event.date === key).length;
+      const dueCount = state.assignments.filter((item) => !item.done && item.date === key).length;
+      const count = eventCount + dueCount;
       return `<div class="week-day${key === todayISO() ? " today" : ""}"><span class="tick"></span><span class="dow">${date.toLocaleDateString(undefined, { weekday: "short" })}</span><span class="dnum">${date.getDate()}</span><span class="dcount">${count || "·"}</span></div>`;
     }).join("");
+    host.querySelectorAll(".week-day").forEach((day, index) => {
+      const date = new Date(start);
+      date.setDate(start.getDate() + index);
+      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+      const spokenDate = date.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" });
+      const link = document.createElement("a");
+      link.className = day.className;
+      link.href = `calendar.html?date=${key}`;
+      const itemCount = Number(day.querySelector(".dcount").textContent);
+      const itemSummary = itemCount === 1 ? "1 item" : `${itemCount} items`;
+      link.setAttribute("aria-label", `${spokenDate}, ${itemCount ? itemSummary : "no items"}`);
+      link.innerHTML = day.innerHTML;
+      day.replaceWith(link);
+    });
+  }
+
+  function renderFocusChoices() {
+    const select = $("#focus-context");
+    if (!select) return;
+    const previous = select.value;
+    const open = state.assignments.filter((item) => !item.done).sort((a, b) => a.date.localeCompare(b.date));
+    select.innerHTML = `<option value="">Choose a task (optional)</option>${open.map((item) => `<option value="${escapeHTML(String(item.id))}" data-title="${escapeHTML(item.title)}">${escapeHTML(item.title)} · ${shortDate(item.date)}</option>`).join("")}`;
+    if (open.some((item) => String(item.id) === previous)) select.value = previous;
   }
 
   function renderOverview() {
@@ -134,6 +176,26 @@
     $("#due-count").textContent = due;
     $("#average-score").textContent = average === null ? "No data" : `${Math.round(average)}%`;
     $("#focus-count").textContent = `${Math.floor(focusMinutes / 60)}h ${focusMinutes % 60}m`;
+    renderFocusChoices();
+    const welcomeHeading = $("#welcome-heading");
+    const welcomeDetail = $("#welcome-detail");
+    if (welcomeHeading && welcomeDetail) {
+      const preferences = state.preferences || {};
+      welcomeHeading.textContent = preferences.onboarded ? `A ${String(preferences.pace || "steady").toLowerCase()} pace, built around your real week.` : "Plan around the week you have.";
+      welcomeDetail.textContent = preferences.onboarded
+        ? `${preferences.challenge ? `You chose ${preferences.challenge.toLowerCase()} as a place to start. ` : ""}Your ${preferences.pace || "steady"} pace is saved on this device.`
+        : "Set a pace and choose a place to begin. Your answers stay on this device.";
+      const welcomeAction = $("#welcome-action");
+      if (welcomeAction && preferences.onboarded) {
+        const nextStep = preferences.challenge === "Getting started"
+          ? { label: "Plan one small step", href: "planner.html" }
+          : preferences.challenge === "Staying focused"
+            ? { label: "Try a focus session", href: "#timer-display" }
+            : { label: "Add your first assignment", href: "assignments.html" };
+        welcomeAction.href = nextStep.href;
+        welcomeAction.innerHTML = `${nextStep.label} <span aria-hidden="true">→</span>`;
+      }
+    }
 
     const agenda = state.events.filter((event) => event.date === todayISO()).sort((a, b) => (a.time || "").localeCompare(b.time || ""));
     const nowTime = `${String(new Date().getHours()).padStart(2, "0")}:${String(new Date().getMinutes()).padStart(2, "0")}`;
@@ -222,6 +284,22 @@
     if ($("#completion-detail")) $("#completion-detail").textContent = `${done} of ${total} assignments`;
     if ($("#focus-total")) $("#focus-total").textContent = `${Math.floor(focus / 60)}h ${focus % 60}m`;
     if ($("#analytics-average")) $("#analytics-average").textContent = average === null ? "No data" : `${Math.round(average)}%`;
+    const focusWeek = $("#focus-week");
+    if (focusWeek) {
+      const days = Array.from({ length: 7 }, (_, index) => {
+        const day = new Date();
+        day.setHours(0, 0, 0, 0);
+        day.setDate(day.getDate() - (6 - index));
+        const key = `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, "0")}-${String(day.getDate()).padStart(2, "0")}`;
+        const minutes = state.sessions.filter((session) => session.done && session.date === key).reduce((sum, session) => sum + Number(session.minutes || 0), 0);
+        return { key, day, minutes };
+      });
+      const maxMinutes = Math.max(25, ...days.map((item) => item.minutes));
+      focusWeek.innerHTML = days.map(({ key, day, minutes }) => {
+        const height = minutes ? Math.max(5, Math.round(minutes / maxMinutes * 100)) : 2;
+        return `<div class="focus-day${key === todayISO() ? " today" : ""}" aria-label="${day.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })}: ${minutes} minutes"><span class="focus-minutes">${minutes || ""}</span><span class="focus-track"><span style="height:${height}%"></span></span><span class="focus-day-label">${day.toLocaleDateString(undefined, { weekday: "short" })}</span></div>`;
+      }).join("");
+    }
     const subjects = {};
     state.grades.forEach((grade) => {
       const subject = grade.subject || "Other";
@@ -256,16 +334,19 @@
         return;
       }
       timerRunning = true;
+      const selected = $("#focus-context")?.selectedOptions[0];
+      activeFocusAssignment = selected?.value ? { id: selected.value, title: selected.dataset.title || "" } : null;
       timerId = setInterval(() => {
         remainingSeconds -= 1;
         if (remainingSeconds <= 0) {
           clearInterval(timerId);
           timerId = null;
           timerRunning = false;
-          state.sessions.push({ id: makeId(), date: todayISO(), minutes: selectedMinutes, done: true });
+          state.sessions.push({ id: makeId(), date: todayISO(), minutes: selectedMinutes, done: true, assignmentId: activeFocusAssignment?.id || "", title: activeFocusAssignment?.title || "Independent study" });
+          activeFocusAssignment = null;
           saveState();
           remainingSeconds = selectedMinutes * 60;
-          showToast("Focus session recorded.");
+          showToast("Focus session saved.");
         }
         renderTimer();
       }, 1000);
@@ -388,7 +469,7 @@
   function bindSettings() {
     if ($("#profile-form")) $("#profile-form").addEventListener("submit", (event) => {
       event.preventDefault();
-      state.profileName = ($("#profile-name").value || "").trim() || "Arnav";
+      state.profileName = ($("#profile-name").value || "").trim() || "Student";
       saveState();
       renderProfile();
       showToast("Profile saved.");

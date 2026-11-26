@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Analytics | Vayro</title>
   <script>try{var t=localStorage.getItem("vayro-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script src="app.js" defer></script>
 </head>
@@ -43,10 +43,16 @@
         <div class="figure"><strong id="analytics-average">No data</strong><span>Average</span></div>
       </section>
 
-      <section>
-        <h2 class="section-title">By subject</h2>
-        <div id="subject-bars" class="bar-list"></div>
-      </section>
+      <div class="analytics-layout">
+        <section class="analytics-focus">
+          <div class="analytics-section-head"><div><h2>Focus time</h2><p>Sessions from the past seven days</p></div><span class="eyebrow">Minutes per day</span></div>
+          <div id="focus-week" class="focus-week" aria-label="Focus sessions during the last seven days"></div>
+        </section>
+        <section class="analytics-subjects">
+          <h2 class="section-title">Grade average by subject</h2>
+          <div id="subject-bars" class="bar-list"></div>
+        </section>
+      </div>
     </main>
   </div>
   <div id="toast" class="toast" role="status"></div>

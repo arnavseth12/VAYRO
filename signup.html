@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f5f1">
+  <title>Set up your study desk | VAYRO</title>
+  <script>try{var t=localStorage.getItem("vayro-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="signup.js" defer></script>
+</head>
+<body class="onboarding-page">
+  <main class="onboarding-shell">
+    <header class="onboarding-topbar">
+      <a class="brand" href="index.html" aria-label="VAYRO home">Vayro<span class="brand-period">.</span></a>
+      <a class="skip-link" href="index.html">Explore first <span aria-hidden="true">→</span></a>
+    </header>
+
+    <div class="onboarding-layout">
+      <section class="onboarding-story" aria-label="About VAYRO">
+        <p class="story-kicker">A study desk for the week you have</p>
+        <h1>Keep the week<br>in view</h1>
+        <p class="story-intro">Assignments, class time and study sessions in one place. Set up a desk that fits your routine, then start adding what’s real.</p>
+
+        <section class="week-preview" aria-label="Example of the VAYRO weekly overview">
+          <div class="preview-heading"><div><span class="preview-overline">A sample week</span><h2>Three things on the list</h2></div><span class="preview-date">Example</span></div>
+          <div class="preview-days" aria-hidden="true">
+            <div class="preview-day"><span data-preview-weekday>Mon</span><strong data-preview-day>24</strong><i></i><small>Essay outline</small></div>
+            <div class="preview-day"><span data-preview-weekday>Tue</span><strong data-preview-day>25</strong><i></i><small>Biology notes</small></div>
+            <div class="preview-day"><span data-preview-weekday>Wed</span><strong data-preview-day>26</strong><i></i><small>Math practice</small></div>
+            <div class="preview-day"><span data-preview-weekday>Thu</span><strong data-preview-day>27</strong><i></i><small>Room to breathe</small></div>
+            <div class="preview-day"><span data-preview-weekday>Fri</span><strong data-preview-day>28</strong><i></i><small>One review</small></div>
+          </div>
+          <p class="preview-foot">A sample week, to show how deadlines and study time sit together.</p>
+        </section>
+
+        <section class="feature-list" aria-label="What you can do in VAYRO">
+          <a href="assignments.html"><span>01</span><span><strong>Keep deadlines visible</strong><small>Add a class, due date and a note</small></span><span aria-hidden="true">↗</span></a>
+          <a href="calendar.html"><span>02</span><span><strong>Make a little room</strong><small>Place study time beside everything else</small></span><span aria-hidden="true">↗</span></a>
+          <a href="planner.html"><span>03</span><span><strong>Break the work down</strong><small>Turn a big task into smaller steps</small></span><span aria-hidden="true">↗</span></a>
+        </section>
+      </section>
+
+      <section class="onboarding-panel" aria-labelledby="step-title">
+        <div class="onboarding-progress-wrap">
+          <div class="onboarding-progress-meta"><span id="step-count">Step 1 of 5</span><span id="step-caption">Study stage</span></div>
+          <div class="onboarding-progress" role="progressbar" aria-label="Setup progress" aria-valuemin="1" aria-valuemax="5" aria-valuenow="1"><span id="progress-fill"></span></div>
+        </div>
+
+        <form id="setup-form" novalidate>
+          <fieldset class="setup-step active" data-step="0">
+            <legend id="step-title">What are you studying?</legend>
+            <p class="step-description">Choose the closest fit. You can change it later.</p>
+            <div class="choice-list" role="group" aria-label="Study stage">
+              <button type="button" class="choice" data-key="stage" data-value="High school" aria-pressed="false"><span><strong>High school</strong><small>Classes, homework and exam weeks</small></span><span class="choice-check" aria-hidden="true"></span></button>
+              <button type="button" class="choice" data-key="stage" data-value="College" aria-pressed="false"><span><strong>College or university</strong><small>Courses, projects and exams</small></span><span class="choice-check" aria-hidden="true"></span></button>
+              <button type="button" class="choice" data-key="stage" data-value="Independent study" aria-pressed="false"><span><strong>Learning on my own</strong><small>Skills, personal goals or curiosity</small></span><span class="choice-check" aria-hidden="true"></span></button>
+            </div>
+          </fieldset>
+
+          <fieldset class="setup-step" data-step="1" hidden>
+            <legend>What do you want to keep track of?</legend>
+            <p class="step-description">Pick any that belong in your week.</p>
+            <div class="choice-list" role="group" aria-label="Things to organize">
+              <button type="button" class="choice multi" data-key="workload" data-value="Assignments" aria-pressed="false"><span><strong>Assignments</strong><small>Names, subjects and due dates</small></span><span class="choice-check" aria-hidden="true"></span></button>
+              <button type="button" class="choice multi" data-key="workload" data-value="Classes and exams" aria-pressed="false"><span><strong>Classes and exams</strong><small>See what is coming up on the calendar</small></span><span class="choice-check" aria-hidden="true"></span></button>
+              <button type="button" class="choice multi" data-key="workload" data-value="Study routines" aria-pressed="false"><span><strong>Study routines</strong><small>Plan a task and set a focus timer</small></span><span class="choice-check" aria-hidden="true"></span></button>
+            </div>
+          </fieldset>
+
+          <fieldset class="setup-step" data-step="2" hidden>
+            <legend>What would make this week easier?</legend>
+            <p class="step-description">We’ll use your answer to suggest a useful first move.</p>
+            <div class="choice-list" role="group" aria-label="What feels difficult">
+              <button type="button" class="choice" data-key="challenge" data-value="Keeping track" aria-pressed="false"><span><strong>Keeping track</strong><small>I have deadlines in too many places</small></span><span class="choice-check" aria-hidden="true"></span></button>
+              <button type="button" class="choice" data-key="challenge" data-value="Getting started" aria-pressed="false"><span><strong>Getting started</strong><small>I want a big task to feel more manageable</small></span><span class="choice-check" aria-hidden="true"></span></button>
+              <button type="button" class="choice" data-key="challenge" data-value="Staying focused" aria-pressed="false"><span><strong>Staying focused</strong><small>Short, quiet work sessions sound useful</small></span><span class="choice-check" aria-hidden="true"></span></button>
+            </div>
+          </fieldset>
+
+          <fieldset class="setup-step" data-step="3" hidden>
+            <legend>Pick a pace that feels doable</legend>
+            <p class="step-description">This is a starting point, not a target to hit every week.</p>
+            <div class="choice-list" role="group" aria-label="Study pace">
+              <button type="button" class="choice" data-key="pace" data-value="Gentle" aria-pressed="false"><span><strong>Gentle</strong><small>Two or three study sessions</small></span><span class="choice-check" aria-hidden="true"></span></button>
+              <button type="button" class="choice" data-key="pace" data-value="Steady" aria-pressed="false"><span><strong>Steady</strong><small>Four or five study sessions</small></span><span class="choice-check" aria-hidden="true"></span></button>
+              <button type="button" class="choice" data-key="pace" data-value="Focused" aria-pressed="false"><span><strong>Focused</strong><small>Six or more when your week allows</small></span><span class="choice-check" aria-hidden="true"></span></button>
+            </div>
+          </fieldset>
+
+          <fieldset class="setup-step" data-step="4" hidden>
+            <legend>What name should appear on your desk?</legend>
+            <p class="step-description">A display name only. No email or password needed.</p>
+            <label class="field onboarding-name"><span>Your display name (optional)</span><input id="display-name" name="displayName" maxlength="32" autocomplete="given-name" placeholder="e.g. Alex"></label>
+            <div class="setup-summary"><span class="summary-rule" aria-hidden="true"></span><p id="setup-summary">Your study setup will appear here.</p></div>
+            <p class="privacy-note">Your answers stay in this browser. There is no online account or cloud sync in this version.</p>
+          </fieldset>
+
+          <section class="setup-finish" id="setup-finish" hidden aria-live="polite">
+            <p class="finish-label">Setup complete</p>
+            <h2 tabindex="-1">Start with one real deadline</h2>
+            <p>Open your desk, add a course or deadline you already have, then let the rest follow.</p>
+            <div class="finish-preview"><span><strong id="finish-name">Your workspace</strong><small id="finish-detail">Preferences saved on this device</small></span><span aria-hidden="true">→</span></div>
+            <a href="index.html" class="button primary finish-button">Open VAYRO <span aria-hidden="true">→</span></a>
+            <p class="privacy-note">No email address required. Your work stays on this device.</p>
+          </section>
+
+          <div class="setup-actions" id="setup-actions">
+            <button type="button" class="back-button" id="back-button" disabled><span aria-hidden="true">←</span> Back</button>
+            <span class="keyboard-hint">About one minute</span>
+            <button type="button" class="button primary next-button" id="next-button" disabled>Next <span aria-hidden="true">→</span></button>
+          </div>
+        </form>
+        <div class="onboarding-panel-foot"><span>VAYRO <span aria-hidden="true">·</span> STUDY WEEK, IN VIEW</span><a href="index.html">Skip setup</a></div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
